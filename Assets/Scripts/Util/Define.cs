@@ -8,6 +8,8 @@ public class Define
     {
         Unknown,
         Player,
+        NonPlayer,
+        NPC,
         Enemy,
     }
     public enum State

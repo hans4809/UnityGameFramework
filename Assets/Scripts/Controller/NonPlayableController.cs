@@ -1,21 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Net.Sockets;
 using UnityEngine;
-using static EnemyController;
 
-public class EnemyController : NonPlayableController
+public class NonPlayableController : BaseController
 {
- 
+    // Start is called before the first frame update
     void Start()
     {
-        Init();
+        
     }
     public override void Init()
     {
-        base.Init();
-        WorldObjectType = Define.WorldObject.Enemy;
+        WorldObjectType = Define.WorldObject.NonPlayer;
     }
     protected override void UpdateIdle()
     {
@@ -29,9 +25,9 @@ public class EnemyController : NonPlayableController
     {
         base.UpdateWalk();
     }
-
     // Update is called once per frame
     void Update()
     {
+        
     }
 }

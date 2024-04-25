@@ -5,7 +5,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterControllerEx : BaseController
+public class CharacterControllerEx : PlayableController
 {
     // Start is called before the first frame update
     void Start()
@@ -15,7 +15,6 @@ public class CharacterControllerEx : BaseController
     public override void Init()
     {
         WorldObjectType = Define.WorldObject.Player;
-
     }
     protected override void UpdateIdle()
     {
@@ -46,7 +45,6 @@ public class CharacterControllerEx : BaseController
                 UpdateRun();
                 break;
         }
-
     }
     private void FixedUpdate()
     {
