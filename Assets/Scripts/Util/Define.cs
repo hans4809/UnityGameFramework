@@ -11,12 +11,15 @@ public class Define
         NonPlayer,
         NPC,
         Enemy,
+        Item
     }
     public enum State
     {
         Idle,
         Walk,
-        Run
+        Run,
+        Damaged,
+        Die
     }
     public enum UIEvent
     {
@@ -44,6 +47,14 @@ public class Define
         Master,
         BGM,
         SFX,
+        MaxCount
+    }
+
+    public enum Item
+    {
+        Unknown,
+        Light,
+        Battery,
         MaxCount
     }
 }

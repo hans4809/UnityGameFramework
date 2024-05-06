@@ -13,7 +13,6 @@ public abstract class BaseController : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        Init();
     }
     public abstract void Init();
     public virtual Define.State State
@@ -58,5 +57,15 @@ public abstract class BaseController : MonoBehaviour
 
     protected virtual void UpdateRun()
     {
+    }
+
+    protected virtual void Damaged()
+    {
+
+    }
+
+    protected virtual void Died()
+    {
+
     }
 }

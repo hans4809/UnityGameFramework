@@ -8,6 +8,7 @@ public class GameManagerEx
     GameObject _player;
     public GameObject GetPlayer() { return _player; }
     HashSet<GameObject> _monsters = new HashSet<GameObject>();
+    HashSet<GameObject> _items = new HashSet<GameObject>();
     public Action<int> OnSpawnEvent;
     public GameObject Spawn(Define.WorldObject type, string path, Transform parent = null)
     {
@@ -31,7 +32,12 @@ public class GameManagerEx
     {
         BaseController bc = go.GetComponent<BaseController>();
         if (bc == null)
-            return Define.WorldObject.Unknown;
+        {
+            BaseItem Item = go.GetComponent<BaseItem>();
+            if (Item == null)
+                return Define.WorldObject.Unknown;
+            return Item.WorldObjectType;
+        }
 
         return bc.WorldObjectType;
     }
@@ -55,6 +61,14 @@ public class GameManagerEx
                 {
                     if (_player == go)
                         _player = null;
+                }
+                break;
+            case Define.WorldObject.Item:
+                {
+                    if(_items.Contains(go))
+                    {
+                        _items.Remove(go);
+                    }
                 }
                 break;
         }

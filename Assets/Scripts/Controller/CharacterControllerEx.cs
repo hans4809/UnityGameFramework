@@ -29,7 +29,14 @@ public class CharacterControllerEx : PlayableController
     {
         base.UpdateWalk();
     }
-
+    protected override void Damaged()
+    {
+        base.Damaged();
+    }
+    protected override void Died()
+    {
+        base.Died();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -44,6 +51,12 @@ public class CharacterControllerEx : PlayableController
             case Define.State.Run:
                 UpdateRun();
                 break;
+            case Define.State.Damaged:
+                Damaged();
+                break;
+            case Define.State.Die:
+                Died();
+                break;
         }
     }
     private void FixedUpdate()
@@ -53,5 +66,16 @@ public class CharacterControllerEx : PlayableController
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        var WorldObjectType = Managers.Game.GetWorldObjectType(other.gameObject);
+
+        switch (WorldObjectType)
+        {
+            case Define.WorldObject.Item:
+                other.gameObject.GetComponent<BaseItem>().Used();
+                break;
+            case Define.WorldObject.Enemy:
+                State = Define.State.Damaged;
+                break;
+        }
     }
 }
