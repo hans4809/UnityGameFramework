@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class InputManager
 {
-    public Action KeyAction = null;
+    public Dictionary<KeyCode, Action> KeyActions = null;
     public Action<Define.MouseEvent> MouseAction = null;
     bool _pressed = false;
     public void OnUpdate()
@@ -15,10 +15,15 @@ public class InputManager
         {
             return;
         }
-        if (Input.anyKey && KeyAction != null)
+
+        foreach (var keyAction in KeyActions)
         {
-            KeyAction.Invoke();
+            if (Input.GetKeyDown(keyAction.Key))
+            {
+                keyAction.Value?.Invoke();
+            }
         }
+
         if (MouseAction != null)
         {
             if (Input.GetMouseButton(0))
@@ -39,6 +44,6 @@ public class InputManager
     public void Clear()
     {
         MouseAction = null;
-        KeyAction = null;
+        KeyActions.Clear();
     }
 }
