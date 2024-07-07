@@ -40,7 +40,7 @@ public class Define
     public enum Scene
     {
         Unknown,
-        MainScene
+        MainScene,
     }
     public enum Sound
     {

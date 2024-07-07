@@ -25,6 +25,9 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private Animator _anim;
     public Animator Anim { get => _anim; private set => _anim = value; }
 
+    [SerializeField] private Vector2 _moveInput;
+    public Vector2 MoveInput { get => _moveInput; private set => _moveInput = value; }
+
 #region 3D
     [SerializeField] private Rigidbody _rb;
     public Rigidbody Rb { get => _rb; private set => _rb = value; }
@@ -70,9 +73,13 @@ public class CharacterMovement : MonoBehaviour
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
+        MoveInput = new Vector2(horizontalInput, verticalInput);
 
-        float mouseX = Input.GetAxis("MouseX");
-        float mouseY = Input.GetAxis("MouseY");
+        if (MoveInput.sqrMagnitude > 1)
+            MoveInput = MoveInput.normalized;
+
+        float mouseX = Input.GetAxis("Mouse X");
+        float mouseY = Input.GetAxis("Mouse Y");
 
         DirVec2 = new Vector2(horizontalInput, verticalInput).normalized;
         DirVec3 = new Vector3(horizontalInput, 0, verticalInput).normalized;
@@ -93,6 +100,7 @@ public class CharacterMovement : MonoBehaviour
                 QuarterViewMoveAndRotate();
                 break;
             case EViewType.ShoulderView:
+                ShoulderViewMoveAndRotate();
                 break;
         }
     }
@@ -127,16 +135,13 @@ public class CharacterMovement : MonoBehaviour
 
     void ShoulderViewMoveAndRotate()
     {
-        if (DirVec3.magnitude > 0)
-        {
-            float targetAngle = Mathf.Atan2(DirVec3.x, DirVec3.z) * Mathf.Rad2Deg;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _rotationSpeed, 0.1f);
-            transform.rotation = Quaternion.Euler(0, angle, 0);
+        var targetSpeed = MoveSpeed * MoveInput.magnitude;
+        var moveDirection = Vector3.Normalize(transform.forward * MoveInput.y + transform.right * MoveInput.x);
 
-            Vector3 moveDirection = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward * MoveSpeed;
-            Rb.velocity = new Vector3(moveDirection.x, Rb.velocity.y, moveDirection.z);
-        }
-        else
-            Rb.velocity = new Vector3(0, Rb.velocity.y, 0);
+        Rb.velocity = new Vector3(moveDirection.x * targetSpeed, Rb.velocity.y, moveDirection.z * targetSpeed);
+
+        var targetRotation = FollowCamera.transform.eulerAngles.y;
+
+        transform.eulerAngles = Vector3.up * targetRotation;
     }
 }

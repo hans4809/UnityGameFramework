@@ -44,6 +44,7 @@ public class InputManager
     public void Clear()
     {
         MouseAction = null;
-        KeyActions.Clear();
+        if(KeyActions != null)
+            KeyActions.Clear();
     }
 }
