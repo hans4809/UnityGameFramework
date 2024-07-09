@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.AI;
 
 [CreateAssetMenu()]
 public class BehaviourTree : ScriptableObject
@@ -14,6 +15,9 @@ public class BehaviourTree : ScriptableObject
 
     [SerializeField] private Node.State _treeState = Node.State.Running;
     public Node.State TreeState { get => _treeState; set => _treeState = value; }
+
+    [SerializeField] private BlackBoard _blackBoard;
+    public BlackBoard BlackBoard { get => _blackBoard; set => _blackBoard = value; }
 
     public Node.State Update() 
     {
@@ -151,5 +155,14 @@ public class BehaviourTree : ScriptableObject
             tree.Nodes.Add(n);
         });
         return tree;
+    }
+
+    public void Bind(/*AiAgent agent*/)
+    {
+        Traverse(RootNode, node =>
+        {
+            //node.agent = agent;
+            node.BlackBoard = BlackBoard;
+        });
     }
 }

@@ -11,6 +11,15 @@ public class BehaviourTreeEditor : EditorWindow
 
     InspectorView _inspectorView;
     public InspectorView InspectorView { get => _inspectorView; private set => _inspectorView = value; }
+
+    IMGUIContainer _blackboardView;
+    public IMGUIContainer BlackboardView { get => _blackboardView; private set => _blackboardView = value; }
+
+    SerializedObject _treeObject;
+    public SerializedObject TreeObject { get => _treeObject; private set => _treeObject = value; }
+
+    SerializedProperty _blackboardProperty;
+    public SerializedProperty BlackboardProperty { get => _blackboardProperty; private set => _blackboardProperty = value; }
     
     [SerializeField]
     private VisualTreeAsset m_VisualTreeAsset = default;
@@ -50,6 +59,14 @@ public class BehaviourTreeEditor : EditorWindow
 
         TreeView = root.Q<BehaviourTreeView>();
         InspectorView = root.Q<InspectorView>();
+        BlackboardView = root.Q<IMGUIContainer>();
+        BlackboardView.onGUIHandler = () =>
+        {
+            TreeObject.Update();
+            EditorGUILayout.PropertyField(BlackboardProperty);
+            TreeObject.ApplyModifiedProperties();
+        };
+
         TreeView.OnNodeSelected = OnNodeSelectedChanged;
 
         OnSelectionChange();
@@ -105,7 +122,12 @@ public class BehaviourTreeEditor : EditorWindow
             if (tree != null && AssetDatabase.CanOpenAssetInEditor(tree.GetInstanceID()))
                 TreeView.PopulateView(tree);
         }
-        
+
+        if(tree != null)
+        {
+            TreeObject = new SerializedObject(tree);
+            BlackboardProperty = TreeObject.FindProperty("_blackBoard");
+        }
     }
 
     void OnNodeSelectedChanged(NodeView node)

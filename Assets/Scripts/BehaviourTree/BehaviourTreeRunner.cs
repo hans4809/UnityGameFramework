@@ -10,6 +10,7 @@ public class BehaviourTreeRunner : MonoBehaviour
     void Start()
     {
         Tree = Tree.Clone();
+        Tree.Bind(/*GetComponent<AiAgent>*/);
     }
 
     // Update is called once per frame

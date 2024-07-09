@@ -6,6 +6,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 using UnityEditor;
 using System.Runtime.Hosting;
+using UnityEditor.UIElements;
 
 public class NodeView : UnityEditor.Experimental.GraphView.Node
 {
@@ -35,6 +36,10 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
         CreateOutputPorts();
 
         SetupClasses();
+
+        Label descriptionLabel = this.Q<Label>("description");
+        descriptionLabel.bindingPath = "description";
+        descriptionLabel.Bind(new SerializedObject(node));
     }
 
     private void SetupClasses()

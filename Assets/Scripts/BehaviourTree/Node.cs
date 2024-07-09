@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public abstract class Node : ScriptableObject
 {
@@ -22,6 +23,13 @@ public abstract class Node : ScriptableObject
 
     public Vector2 _position;
     public Vector2 Position { get => _position; set => _position = value; }
+
+    private BlackBoard _blackBoard;
+    public BlackBoard BlackBoard { get => _blackBoard; set => _blackBoard = value; }
+    [TextArea] public string description;
+
+    //private AiAgent _aiAgent;
+    //public AiAgent 
 
     public State Update()
     {
