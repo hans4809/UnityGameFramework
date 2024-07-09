@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abb6b6a839ac2324ab31e7d102cc0580, type: 3}
   m_Name: RootNode
   m_EditorClassIdentifier: 
-  _position: {x: 345, y: -280.32}
+  _position: {x: 360.99997, y: -297.88528}
   _childNode: {fileID: -3785202808768045715}
 --- !u!114 &4438513696106336216
 MonoBehaviour:

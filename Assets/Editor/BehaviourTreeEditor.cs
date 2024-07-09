@@ -112,4 +112,10 @@ public class BehaviourTreeEditor : EditorWindow
     {
         InspectorView.UpdateSelection(node);
     }
+
+    private void OnInspectorUpdate()
+    {
+        if (TreeView != null)
+            TreeView.UpdateNodeState();
+    }
 }

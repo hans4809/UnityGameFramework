@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 using UnityEditor;
+using System.Runtime.Hosting;
 
 public class NodeView : UnityEditor.Experimental.GraphView.Node
 {
@@ -110,5 +111,29 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
     private int SortByHorizontalPosition(Node left, Node right)
     {
         return left.Position.x < right.Position.x ? -1 : 1;
+    }
+
+    public void UpdateState() 
+    {
+        RemoveFromClassList("running");
+        RemoveFromClassList("failure");
+        RemoveFromClassList("success");
+
+        if (Application.isPlaying)
+        {
+            switch (Node.CurrentState)
+            {
+                case Node.State.Running:
+                    if(Node.bIsStarted)
+                        AddToClassList("running");
+                    break;
+                case Node.State.Failure:
+                    AddToClassList("failure");
+                    break;
+                case Node.State.Success:
+                    AddToClassList("success");
+                    break;
+            }
+        }
     }
 }
