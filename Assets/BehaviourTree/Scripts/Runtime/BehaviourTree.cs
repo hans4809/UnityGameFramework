@@ -80,7 +80,7 @@ public class BehaviourTree : ScriptableObject
         if (composite != null)
         {
             Undo.RecordObject(composite, "Behaviour Tree (AddChild)");
-            composite.ChildrenNode.Add(child);
+            composite.ChildrenNodes.Add(child);
             EditorUtility.SetDirty(composite);
         }
 
@@ -110,13 +110,13 @@ public class BehaviourTree : ScriptableObject
         if (composite != null)
         {
             Undo.RecordObject(composite, "Behaviour Tree (RemoveChild)");
-            composite.ChildrenNode.Remove(child);
+            composite.ChildrenNodes.Remove(child);
             EditorUtility.SetDirty(composite);
         }
 
     }
 
-    public List<Node> GetChildren(Node parent)
+    public static List<Node> GetChildren(Node parent)
     {
         List<Node> children = new List<Node>();
 
@@ -130,13 +130,13 @@ public class BehaviourTree : ScriptableObject
 
         CompositeNode composite = parent as CompositeNode;
         if (composite != null)
-            return composite.ChildrenNode;
+            return composite.ChildrenNodes;
 
         return children;
     }
 #endif
 
-    public void Traverse(Node node, System.Action<Node> visiter)
+    public static void Traverse(Node node, System.Action<Node> visiter)
     {
         if(node)
         {
@@ -157,11 +157,11 @@ public class BehaviourTree : ScriptableObject
         return tree;
     }
 
-    public void Bind(/*AiAgent agent*/)
+    public void Bind(Context context)
     {
         Traverse(RootNode, node =>
         {
-            //node.agent = agent;
+            node.Context = context;
             node.BlackBoard = BlackBoard;
         });
     }

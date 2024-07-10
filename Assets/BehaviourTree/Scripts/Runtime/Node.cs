@@ -24,9 +24,15 @@ public abstract class Node : ScriptableObject
     public Vector2 _position;
     public Vector2 Position { get => _position; set => _position = value; }
 
+    private Context _context;
+    public Context Context { get => _context; set => _context = value; }
+
     private BlackBoard _blackBoard;
     public BlackBoard BlackBoard { get => _blackBoard; set => _blackBoard = value; }
     [TextArea] public string description;
+
+    private bool _drawGizmos = false;   
+    public bool DrawGizmos { get => _drawGizmos; set => _drawGizmos = value;}
 
     //private AiAgent _aiAgent;
     //public AiAgent 
@@ -54,6 +60,16 @@ public abstract class Node : ScriptableObject
     {
         return Instantiate(this);
     }
+
+    public void Abort()
+    {
+        BehaviourTree.Traverse(this, (node) => {
+            node.bIsStarted = false;
+            node.CurrentState = State.Running;
+            node.OnStop();
+        });
+    }
+    public virtual void OnDrawGizmos() { }
 
     protected abstract void OnStart();
     protected abstract void OnStop();

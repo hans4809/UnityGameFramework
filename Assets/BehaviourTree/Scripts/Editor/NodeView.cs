@@ -25,7 +25,8 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
     public NodeView(Node node) : base ("Assets/Editor/NodeView.uxml")
     {
         this.Node = node;
-        this.title = node.name;
+        this.Node.name = node.GetType().Name;
+        this.title = node.name.Replace("(Clone)", "").Replace("Node", "");
         this.viewDataKey = node.GUID;
 
 
@@ -36,12 +37,15 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
         CreateOutputPorts();
 
         SetupClasses();
-
-        Label descriptionLabel = this.Q<Label>("description");
-        descriptionLabel.bindingPath = "description";
-        descriptionLabel.Bind(new SerializedObject(node));
+        SetupDataBinding();
     }
 
+    private void SetupDataBinding()
+    {
+        Label descriptionLabel = this.Q<Label>("description");
+        descriptionLabel.bindingPath = "description";
+        descriptionLabel.Bind(new SerializedObject(Node));
+    }
     private void SetupClasses()
     {
         if (Node is ActionNode)
@@ -110,7 +114,7 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
     {
         CompositeNode composite = Node as CompositeNode;
         if (composite != null)
-            composite.ChildrenNode.Sort(SortByHorizontalPosition);
+            composite.ChildrenNodes.Sort(SortByHorizontalPosition);
     }
 
     private int SortByHorizontalPosition(Node left, Node right)
