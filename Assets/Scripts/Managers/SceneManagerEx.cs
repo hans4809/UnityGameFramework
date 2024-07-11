@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagerEx
 {
+    private bool _isMultiPlay = false;
+    public bool IsMultiPlay { get => _isMultiPlay; set => _isMultiPlay = value; }
     private AsyncOperation _asyncLoadSceneOper;
     public AsyncOperation AsyncLoadSceneOper { get => _asyncLoadSceneOper; private set => _asyncLoadSceneOper = value; }
 
@@ -14,10 +17,13 @@ public class SceneManagerEx
     {
         get { return GameObject.FindObjectOfType<BaseScene>(); }
     }
-    public void LoadScene(Define.Scene type)
+    public void LoadScene(Define.Scene type, bool isMultiplay = false)
     {
         Managers.Clear();
-        SceneManager.LoadScene(GetSceneName(type));
+        if(!isMultiplay)
+            SceneManager.LoadScene(GetSceneName(type));
+        else
+            PhotonNetwork.LoadLevel(GetSceneName(type));
     }
     string GetSceneName(Define.Scene type)
     {
@@ -35,7 +41,7 @@ public class SceneManagerEx
             LoadingScene = null;
     }
 
-    public IEnumerator LoadSceneAsync(Define.Scene type)
+    public IEnumerator LoadSceneAsync(Define.Scene type, bool isMultiplay = false)
     {
         Managers.Clear();
 

@@ -32,7 +32,6 @@ public class UI_Manager
 
         if(canvas.renderMode != RenderMode.ScreenSpaceOverlay)
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        //canvas.renderMode = RenderMode.ScreenSpaceCamera;
         if(canvas.worldCamera == null)
             canvas.worldCamera = Camera.main;
         if(canvas.overrideSorting == false)
