@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Diagnostics;
+using UnityEngine.UI;
 
 public class UI_Manager
 {
@@ -27,10 +28,22 @@ public class UI_Manager
     public void SetCanvas(GameObject go, bool sort = true)
     {
         Canvas canvas = Util.GetOrAddComponent<Canvas>(go);
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        CanvasScaler canvasScaler = Util.GetOrAddComponent<CanvasScaler>(go);
+
+        if(canvas.renderMode != RenderMode.ScreenSpaceOverlay)
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         //canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        canvas.worldCamera = Camera.main;
-        canvas.overrideSorting = true;
+        if(canvas.worldCamera == null)
+            canvas.worldCamera = Camera.main;
+        if(canvas.overrideSorting == false)
+            canvas.overrideSorting = true;
+
+        if(canvasScaler.uiScaleMode != CanvasScaler.ScaleMode.ScaleWithScreenSize)
+            canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        if(canvasScaler.referenceResolution != new Vector2(1920f, 1080f))
+            canvasScaler.referenceResolution = new Vector2(1920f, 1080f);
+        if(canvasScaler.screenMatchMode != CanvasScaler.ScreenMatchMode.Expand)
+            canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
 
         if (sort)
         {
