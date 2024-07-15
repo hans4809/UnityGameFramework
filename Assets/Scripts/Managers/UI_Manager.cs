@@ -123,6 +123,29 @@ public class UI_Manager
             ClosePopUpUI();
         }
     }
+
+    public IEnumerator Fade(Image image, float fadeDuration, bool isFadeIn = true)
+    {
+        float elapsedTime = 0f;
+        Color color = image.color;
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            if(isFadeIn)
+                color.a = Mathf.Clamp01(elapsedTime / fadeDuration);
+            else
+                color.a = 1f - Mathf.Clamp01(elapsedTime / fadeDuration);
+            image.color = color;
+            yield return null;
+        }
+        if(isFadeIn)
+            color.a = 1f;
+        else
+            color.a = 0f;
+
+        image.color = color;
+    }
+
     public void Clear()
     {
         CloseAllPopUPUI();
