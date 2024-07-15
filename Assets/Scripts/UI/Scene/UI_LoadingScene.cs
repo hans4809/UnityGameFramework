@@ -34,7 +34,7 @@ public class UI_LoadingScene : UI_Scene
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButton(0))
+        if(Input.GetMouseButtonDown(0))
         {
             var asyncOper = Managers.Scene.AsyncLoadSceneOper;
             if (asyncOper != null)
