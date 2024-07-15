@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -125,7 +126,7 @@ public class UI_Manager
         }
     }
 
-    public IEnumerator Fade(Image image, float fadeDuration, bool isFadeIn = true)
+    public IEnumerator FadeImage(Image image, float fadeDuration, bool isFadeIn = true)
     {
         float elapsedTime = 0f;
         Color color = image.color;
@@ -145,6 +146,31 @@ public class UI_Manager
             color.a = 0f;
 
         image.color = color;
+    }
+
+    public IEnumerator FadeText(TMP_Text text, float fadeDuration, bool isFadeIn = true)
+    {
+        text.color = new Color(text.color.r, text.color.g, text.color.b, 0);
+
+        float elapsedTime = 0f;
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float alpha = Mathf.Clamp01(elapsedTime / fadeDuration);
+            float a;
+            if(isFadeIn)
+                a = Mathf.Lerp(0, 1, alpha);
+            else
+                a = 1 - Mathf.Lerp(0, 1, alpha);
+            text.color = new Color(text.color.r, text.color.g, text.color.b, a);
+
+            yield return null;
+        }
+
+        if(isFadeIn)
+            text.color = new Color(text.color.r, text.color.g, text.color.b, 1);
+        else
+            text.color = new Color(text.color.r, text.color.g, text.color.b, 0);
     }
 
     public IEnumerator BlinkText(TextMeshProUGUI textMesh, float blinkDuration)
