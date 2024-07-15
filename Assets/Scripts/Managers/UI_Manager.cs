@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Diagnostics;
@@ -144,6 +145,17 @@ public class UI_Manager
             color.a = 0f;
 
         image.color = color;
+    }
+
+    public IEnumerator BlinkText(TextMeshProUGUI textMesh, float blinkDuration)
+    {
+        while (true)
+        {
+            textMesh.gameObject.SetActive(true);
+            yield return new WaitForSeconds(blinkDuration);
+            textMesh.gameObject.SetActive(false);
+            yield return new WaitForSeconds(blinkDuration);
+        }
     }
 
     public void Clear()
